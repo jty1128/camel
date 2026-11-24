@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 from io import BytesIO
-from typing import List, Optional
 from urllib.parse import urlparse
 
 import requests
@@ -28,12 +27,10 @@ from camel.models import BaseModelBackend, ModelFactory
 from camel.toolkits import FunctionTool
 from camel.toolkits.base import BaseToolkit
 from camel.types import ModelPlatformType, ModelType
-from camel.utils import MCPServer
 
 logger = get_logger(__name__)
 
 
-@MCPServer()
 class ImageAnalysisToolkit(BaseToolkit):
     r"""A toolkit for comprehensive image analysis and understanding.
     The toolkit uses vision-capable language models to perform these tasks.
@@ -41,8 +38,8 @@ class ImageAnalysisToolkit(BaseToolkit):
 
     def __init__(
         self,
-        model: Optional[BaseModelBackend] = None,
-        timeout: Optional[float] = None,
+        model: BaseModelBackend | None = None,
+        timeout: float | None = None,
     ):
         r"""Initialize the ImageAnalysisToolkit.
 
@@ -66,7 +63,7 @@ class ImageAnalysisToolkit(BaseToolkit):
             )
 
     def image_to_text(
-        self, image_path: str, sys_prompt: Optional[str] = None
+        self, image_path: str, sys_prompt: str | None = None
     ) -> str:
         r"""Generates textual description of an image with optional custom
         prompt.
@@ -94,7 +91,7 @@ class ImageAnalysisToolkit(BaseToolkit):
         )
 
     def ask_question_about_image(
-        self, image_path: str, question: str, sys_prompt: Optional[str] = None
+        self, image_path: str, question: str, sys_prompt: str | None = None
     ) -> str:
         r"""Answers image questions with optional custom instructions.
 
@@ -203,7 +200,7 @@ class ImageAnalysisToolkit(BaseToolkit):
             logger.error(f"Unexpected error: {e}")
             return f"Analysis failed: {e!s}"
 
-    def get_tools(self) -> List[FunctionTool]:
+    def get_tools(self) -> list[FunctionTool]:
         r"""Returns a list of FunctionTool objects representing the functions
             in the toolkit.
 
